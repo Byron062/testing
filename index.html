@@ -2,46 +2,33 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mi Página de Ejemplo</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f0f0f0;
-    }
-
-    #mensaje {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #0078D7;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #005ea6;
-    }
-  </style>
+  <title>Enviar mensaje a Discord</title>
 </head>
 <body>
-
-  <div id="mensaje">¡Hola, mundo!</div>
-  <button onclick="cambiarMensaje()">Haz clic aquí</button>
+  <h2>Mensaje para Discord:</h2>
+  <input type="text" id="mensaje" placeholder="Escribe tu mensaje aquí">
+  <button onclick="enviarMensaje()">Enviar</button>
 
   <script>
-    function cambiarMensaje() {
-      const mensaje = document.getElementById('mensaje');
-      mensaje.textContent = '¡Has hecho clic!';
+    function enviarMensaje() {
+      const mensaje = document.getElementById("mensaje").value;
+
+      fetch("http://localhost:3000/enviar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ mensaje: mensaje })
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert("Mensaje enviado");
+      })
+      .catch(err => {
+        alert("Error al enviar el mensaje");
+        console.error(err);
+      });
     }
   </script>
-
 </body>
 </html>
